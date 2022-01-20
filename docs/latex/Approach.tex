@@ -1,0 +1,348 @@
+\documentclass[titlepage]{article}
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{enumerate}
+\usepackage{sectsty}
+\usepackage[none]{hyphenat}
+\usepackage{setspace}
+\usepackage{cuted}
+\usepackage{nameref}
+\usepackage[utf8]{inputenc}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+
+%--------------------------------------------------------------------------------
+% Notations
+
+\usepackage[nopostdot,  style=long3col, nonumberlist, toc]{glossaries}
+
+\newglossary{symbols}{sym}{sbl}{Nomenclature}
+
+\makeglossary
+
+
+\newglossaryentry{city_source}
+{
+type=symbols,
+name={\ensuremath{i}},
+sort={01},
+description={Source city}
+}
+
+\newglossaryentry{city_destination}
+{
+type=symbols,
+name={\ensuremath{j}},
+sort={02},
+description={Destination city}
+}
+
+\newglossaryentry{city_set}
+{
+type=symbols,
+name={\ensuremath{I}},
+sort={03},
+description={Set of cities}
+}
+
+\newglossaryentry{city_count}
+{
+type=symbols,
+name={\ensuremath{N}},
+sort={04},
+description={Total number of cities (\gls{city_set})}
+}
+
+\newglossaryentry{distance}
+{
+type=symbols,
+name={\ensuremath{D_{\gls{city_source}\gls{city_destination}}}},
+sort={05},
+description={Distance between source city \gls{city_source} and destination city \gls{city_destination}}
+}
+
+\newglossaryentry{dv_xij}
+{
+type=symbols,
+name={\ensuremath{X_{\gls{city_source}\gls{city_destination}}}},
+sort={06},
+description={Binary flag, sales man travels from source city \gls{city_source} to desination city \gls{city_destination}}
+}
+
+\newglossaryentry{av_ui}
+{
+type=symbols,
+name={\ensuremath{U_{\gls{city_source}}}},
+sort={07},
+description={Integer, artificial  variable for source city \gls{city_source}}
+}
+
+\newglossaryentry{av_uj}
+{
+type=symbols,
+name={\ensuremath{U_{\gls{city_destination}}}},
+sort={08},
+description={Integer, artificial  variable for destination city \gls{city_destination}}
+}
+
+
+\newglossaryentry{supply_node}
+{
+type=symbols,
+name={\ensuremath{s}},
+sort={09},
+description={Supply node}
+}
+
+\newglossaryentry{supply_set}
+{
+type=symbols,
+name={\ensuremath{S}},
+sort={091},
+description={List of supply nodes \gls{supply_node}}
+}
+
+\newglossaryentry{demand_node}
+{
+type=symbols,
+name={\ensuremath{d}},
+sort={092},
+description={Demand node}
+}
+
+\newglossaryentry{demand_set}
+{
+type=symbols,
+name={\ensuremath{D}},
+sort={093},
+description={List of demand nodes \gls{demand_node}}
+}
+
+
+\newglossaryentry{cost}
+{
+type=symbols,
+name={\ensuremath{C_{\gls{supply_node}\gls{demand_node}}}},
+sort={094},
+description={Cost to transport one unit from supply node \gls{supply_node} to demand node \gls{demand_node}}
+}
+
+\newglossaryentry{dv_xsd}
+{
+type=symbols,
+name={\ensuremath{X_{\gls{supply_node}\gls{demand_node}}}},
+sort={095},
+description={Integer, quantity transported from supply node \gls{supply_node} to demand node \gls{demand_node}}
+}
+
+\newglossaryentry{supply_qty}
+{
+type=symbols,
+name={\ensuremath{Q_{\gls{supply_node}}}},
+sort={096},
+description={Supply quantity for node \gls{supply_node}}
+}
+
+\newglossaryentry{demand_qty}
+{
+type=symbols,
+name={\ensuremath{Q_{\gls{demand_node}}}},
+sort={097},
+description={Demand quantity for node \gls{demand_node}}
+}
+
+
+%--------------------------------------------------------------------------------
+%Title and section font sizes
+
+\parttitlefont{\Large}
+\sectionfont{\large}
+
+%--------------------------------------------------------------------------------
+
+\renewenvironment{abstract}
+ {\par\noindent\textbf{\Large\abstractname}\\ \ignorespaces}
+ {\par\medskip}
+
+
+%--------------------------------------------------------------------------------
+% Title
+
+\title{Optimization module}
+\author{
+Diptesh Basak\\
+\and
+Madhu Tangudu\\
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%--------------------------------------------------------------------------------
+
+\pagebreak
+
+\begin{abstract}
+\hrule
+\hfill
+\doublespacing
+\newline The objective of this document is to provide a structure for all
+future documentation for all products. In this paper, we illustrate some of the optimization techniques which has
+been implemented namely:
+
+\begin{enumerate}[i]
+  \item Travelling salesman problem
+  \item Transportation problem
+\end{itemize}
+
+\end{abstract}
+
+\pagebreak
+
+\tableofcontents
+
+\listoftables
+
+\pagebreak
+
+\hrule
+
+\begin{multicols}{2}
+
+\section{Travelling Salesman Problem}
+\label{section:TSP}
+
+The travelling salesman problem (TSP) is about given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city.
+
+\begin{flushleft}
+{
+\emph{Data Used:}
+\begin{flalign}
+\nonumber & \gls{city_source} \in \gls{city_set} & \\
+\nonumber & \gls{city_destination} \in \gls{city_set} & \\
+\nonumber  & \gls{distance} &
+\end{flalign}
+}
+
+\emph{Decision variables:}\\
+
+\vspace{0.3cm}
+$
+ \hspace{0.2cm}
+ \gls{dv_xij}=
+ \begin{cases}
+ 1,&\text{if salesman travels from \gls{city_source} to \gls{city_destination}} \\
+ 0, & \text{otherwise}
+ \end{cases}
+ \vspace{0.2cm}
+$
+
+$
+ \hspace{0.2cm}
+ \vspace{0.2cm}
+ \gls{av_ui} \in Integer
+$
+
+$
+ \hspace{0.2cm}
+ \gls{av_uj} \in Integer
+ \vspace{0.2cm}
+$
+\vspace{0.2cm}
+
+\emph{Objective function:}
+
+\begin{equation}
+\min \sum_{\gls{city_source} \in \gls{city_set}} \sum_{\gls{city_destination} \in  \gls{city_set}} \gls{dv_xij} \times \gls{distance}
+\end{equation}
+
+\end{flushleft}
+
+\emph{s.t.}
+\\
+% \vspace{2mm}
+Each node should be entered and exited exactly once
+
+\begin{flalign}
+& \sum_{\gls{city_source}} \gls{dv_xij} = 1 & \forall \gls{city_destination}
+\end{flalign}
+
+\begin{flalign}
+& \sum_{\gls{city_destination}} \gls{dv_xij} = 1 & \forall \gls{city_source}
+\end{flalign}
+Eliminate subtours:
+\begin{equation}
+\begin{split}
+\gls{av_ui} - \gls{av_uj} + \gls{city_count} \times \gls{dv_xij} = \gls{city_count} - 1 \\
+  & \forall \gls{city_source} \in 1,2..\gls{city_count}-1 \\
+  & \gls{city_destination} \in 2, 3 .. \gls{city_count}
+\end{split}
+\end{equation}
+
+\section{Transportation Problem}
+\label{section:Transportation}
+Transportation problem is about goods being transported from a set of sources to a set of destinations subject to the supply and demand of the sources and destination respectively such that the total cost of transportation is minimized. It is also sometimes called as Hitchcock problem.
+
+\begin{flushleft}
+{
+\emph{Data Used:}
+\begin{flalign}
+\nonumber & \gls{supply_node} \in \gls{supply_set} & \\
+\nonumber & \gls{demand_node} \in \gls{demand_set} & \\
+\nonumber  & \gls{cost}, \gls{supply_qty}, \gls{demand_qty} &
+\end{flalign}
+}
+
+\emph{Decision variables:}
+
+$
+ \hspace{0.2cm}
+ \vspace{0.2cm}
+ \gls{dv_xsd} \in Integer
+$
+
+\emph{Objective function:}
+
+\begin{equation}
+\min \sum_{\gls{supply_node} \in \gls{supply_set}} \sum_{\gls{demand_node} \in \gls{demand_set}} \gls{dv_xsd} \times \gls{cost}
+\end{equation}
+\end{flushleft}
+
+\emph{s.t.}
+\\
+% \vspace{2mm}
+For a supply node, units shipped must be less than or equal to the supply quantity
+
+\begin{flalign}
+& \sum_{\gls{demand_node} \in \gls{demand_set}} \gls{dv_xsd} <= \gls{supply_qty} & \forall \gls{supply_node}
+\end{flalign}
+For a demand node, units shipped must be greater than or equal to the demand quantity
+
+\begin{flalign}
+& \sum_{\gls{supply_node} \in \gls{supply_set}} \gls{dv_xsd} >= \gls{demand_qty} & \forall \gls{demand_node}
+\end{flalign}
+
+
+\end{multicols}
+
+
+
+%--------------------------------------------------------------------------------
+% Notations
+
+\pagebreak
+
+\hrule
+
+\printglossaries
+
+%--------------------------------------------------------------------------------
+
+\end{document}
+
+%--------------------------------------------------------------------------------
