@@ -1,0 +1,83 @@
+name: User story
+description: A valuable increment of functionality, testable by the users
+title: "[User story]: "
+labels: ["story"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      placeholder: As a ‹role/End user profile›, I'd like to ‹feature short description/Goal›, in order to ‹value it adds/Business value›.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user
+    attributes:
+      label: End user profile/persona
+      placeholder: |
+        - User persona 01: X team members
+        - User persona 02: Y team members
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goals and objectives
+      placeholder: |
+        - Objective 01
+        - Objective 02
+    validations:
+      required: true
+
+  - type: textarea
+    id: value
+    attributes:
+      label: Business value
+      placeholder: Illustrate the value proposition with business background.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Business impact
+      placeholder: |
+        Please provide an approximate dollar impact. The business impact may be any of the following:
+
+        - Incremental earnings or savings
+        - Size of prize
+        - Dollar loss if the application was not built (cost of business)
+    validations:
+      required: true
+
+  - type: textarea
+    id: accept
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        NOTE: Acceptance criteria should be measurable and should be based on maximum possible limit.
+
+        Example: If the acceptance criteria for an application is based on response time, specify the response time such that post which the application will not be adopted/used at all i.e. a deal breaker. Meaning if the acceptance criteria for response time is 1 minute, the end user will NOT use the application at all if the response time is more than 1 minute.
+    validations:
+      required: true
+
+  - type: input
+    id: sponsor
+    attributes:
+      label: Business sponsor
+      description: Please provide the name and email of business unit head of the end user(s).
+      placeholder: ex. email@example.com
+    validations:
+      required: true
+
+  - type: textarea
+    id: add-context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context or screenshots about the user story here.
+    validations:
+      required: false

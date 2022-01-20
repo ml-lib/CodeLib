@@ -1,0 +1,6 @@
+__pycache__/
+metastore_db/
+.coverage
+.DS_Store
+gurobi.log
+derby.log

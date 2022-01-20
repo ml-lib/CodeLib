@@ -1,0 +1,41 @@
+name: Maintenance request
+description: Describe the technical debt or runtime updates
+title: "[Maintenance]: "
+labels: ["maintenance"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the maintenance request
+      placeholder: A clear and concise description of the request.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Current impact
+      placeholder: Quantify the impact of not completing the request.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our product are you running?
+      options:
+        - v0.4.1 (Default)
+        - v0.4.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: add-context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context or screenshots about the maintenance request here.
+    validations:
+      required: false

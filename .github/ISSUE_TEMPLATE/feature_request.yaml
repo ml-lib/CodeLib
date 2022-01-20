@@ -1,0 +1,74 @@
+name: Feature request
+description: Request a feature addition
+title: "[Feature]: "
+labels: ["feature", "tests"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Is your feature request related to a problem? Please describe.
+      placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      placeholder: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: input
+    attributes:
+      label: Expected input(s)
+      placeholder: |
+        input_01: int
+        input_02: List[Union[int, float]]
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected output(s)
+      placeholder: |
+        output_01: Dict[str, int]
+        output_02: List[Union[int, float]]
+      render: python
+    validations:
+      required: true
+
+  - type: textarea
+    id: add-context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context or screenshots about the feature request here.
+    validations:
+      required: false
+
+  - type: textarea
+    id: accept
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        NOTE: Acceptance criteria should be measurable and should be based on maximum possible limit.
+
+        Example: If the acceptance criteria for an application is based on response time, specify the response time such that post which the application will not be adopted/used at all i.e. a deal breaker. Meaning if the acceptance criteria for response time is 1 minute, the end user will NOT use the application at all if the response time is more than 1 minute.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our product are you running?
+      options:
+        - v0.4.1 (Default)
+        - v0.4.0
+    validations:
+      required: true

@@ -1,0 +1,36 @@
+name: EDA request
+description: Request an EDA request
+title: "[EDA]: "
+labels: ["eda"]
+assignees:
+  - octocat
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the EDA request
+      placeholder: A clear and concise description of the request.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected outcomes(s)
+      placeholder: Describe expected analyses/outcomes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: add-context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context or screenshots about the EDA request here.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+
+        ### NOTE: EDA branch(es) if at all created should not be merged into production/perennial branches i.e. (stable/testing/master)
