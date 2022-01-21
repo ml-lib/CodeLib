@@ -13,7 +13,7 @@
     1. [Version control](./README.md#version-control)
 1. Project tracker
     1. [Backlogs](https://github.com/orgs/ml-lib/projects/1/views/1)
-    1. [Release](https://github.com/orgs/ml-lib/projects/1/views/4)
+    1. [Releases](https://github.com/orgs/ml-lib/projects/1/views/4)
     1. [Kanban board (current release)](https://github.com/orgs/ml-lib/projects/1/views/5)    
 1. [Project documents](./docs)
     1. [Approach](./docs/Approach.pdf)
