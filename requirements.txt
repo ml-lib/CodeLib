@@ -1,0 +1,10 @@
+PuLP==1.6.8
+pandas==1.3.5
+Cython==0.29.25
+pmdarima==1.8.1
+openpyxl==3.0.9
+xlrd==2.0.1
+xgboost==1.5.0
+numpy==1.21.2
+statsmodels==0.13.0
+scikit_learn==1.0.2
