@@ -1,11 +1,14 @@
 """
 Test suite module for ``XGBoost``.
+
 Credits
 -------
 ::
+
     Authors:
         - Diptesh
         - Madhu
+
     Date: Sep 27, 2021
 """
 
@@ -21,8 +24,6 @@ from inspect import getsourcefile
 from os.path import abspath
 
 import pandas as pd
-import xlrd
-import openpyxl
 
 from sklearn.model_selection import train_test_split as split
 from sklearn import metrics as sk_metrics
@@ -35,8 +36,6 @@ sys.path.insert(0, path)
 
 from mllib.lib.tree import RandomForest  # noqa: F841
 from mllib.lib.tree import XGBoost  # noqa: F841
-
-__all__ = ["xlrd", "openpyxl", ]
 
 # =============================================================================
 # --- DO NOT CHANGE ANYTHING FROM HERE
@@ -66,7 +65,7 @@ class Test_RandomForest(unittest.TestCase):
         """Set up for module ``RandomForest``."""
 
     def test_rf_class(self):
-        """RandomForest: Test for classification"""
+        """RandomForest: Test for classification."""
         x_var = ["x1", "x2", "x3", "x4"]
         y_var = "y"
         df_ip = pd.read_csv(path + "iris.csv")
@@ -82,7 +81,7 @@ class Test_RandomForest(unittest.TestCase):
         self.assertGreaterEqual(acc, 0.93)
 
     def test_rf_reg(self):
-        """RandomForest: Test for regression"""
+        """RandomForest: Test for regression."""
         x_var = ["x1", "x2", "x3", "x4"]
         y_var = "y"
         df_ip = pd.read_csv(path + "iris.csv")
@@ -134,7 +133,7 @@ class Test_XGBoost(unittest.TestCase):
         """Set up for module ``XGBoost``."""
 
     def test_xgboost_class(self):
-        """XGBoost: Test for classification"""
+        """XGBoost: Test for classification."""
         x_var = ["x1", "x2"]
         y_var = "y"
         df_ip = pd.read_csv(path + "iris.csv")
@@ -150,7 +149,7 @@ class Test_XGBoost(unittest.TestCase):
         self.assertGreaterEqual(acc, 0.93)
 
     def test_xgboost_reg(self):
-        """XGBoost: Test for regression"""
+        """XGBoost: Test for regression."""
         x_var = ["x1", "x2", "x3", "x4"]
         y_var = "y"
         df_ip = pd.read_csv(path + "iris.csv")
@@ -193,7 +192,6 @@ class Test_XGBoost(unittest.TestCase):
         metrics = mod.model_summary
         self.assertAlmostEqual(1.0, metrics["rsq"], places=1)
         self.assertLessEqual(metrics["mape"], 0.1)
-
 
 # =============================================================================
 # --- Main

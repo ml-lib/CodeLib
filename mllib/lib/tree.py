@@ -1,14 +1,19 @@
 """
 Tree based models.
+
 **Available routines:**
+
 - class ``RandomForest``: Builds Random Forest model using cross validation.
 - class ``XGBoost``: Builds XGBoost model using cross validation.
+
 Credits
 -------
 ::
+
     Authors:
         - Diptesh
         - Madhu
+
     Date: Jan 15, 2022
 """
 
@@ -189,58 +194,86 @@ class Tree():
 
 class RandomForest(Tree):
     """Random forest module.
+
     Objective:
         - Build
           `Random forest <https://en.wikipedia.org/wiki/Random_forest>`_
           model and determine optimal k
+
     Parameters
     ----------
     df : pandas.DataFrame
+
         Pandas dataframe containing the `y_var` and `x_var`
+
     y_var : str
+
         Dependant variable
+
     x_var : List[str]
+
         Independant variables
+
     method : str, optional
+
         Can be either `classify`, `timeseries` or `regression`
         (the default is regression)
+
     k_fold : int, optional
+
         Number of cross validations folds (the default is 5)
+
     threshold : float, optional
+
          Threshold to identify significant lag values (the default is 0.05)
+
     param : dict, optional
+
         Random forest parameters (the default is None).
         In case of None, the parameters will default to::
+
             bootstrap: [True]
             max_depth: [1, len(x_var)]
             n_estimators: [1000]
             max_features: ["sqrt", "auto"]
             min_samples_leaf: [2, 5]
+
     ts_param : dict, optional
+
         Random forest parameters (the default is None).
         In case of None, the parameters will default to::
+
             threshold: 0.05
             max_lag: 20
             ts_x_var: None
             ts_lag_var: None
             seasonality: None
+
     Returns
     -------
     model : object
+
         Final optimal model.
+
     best_params_ : Dict
+
         Best parameters amongst the given parameters.
+
     model_summary : Dict
+
         Model summary containing key metrics like R-squared, RMSE, MSE, MAE,
         MAPE for regression and Accuracy, Precision, Recall, F1 score for
         classification.
+
     Methods
     -------
     predict
+
     Example
     -------
     >>> mod = RandomForest(df=df_ip, y_var="y", x_var=["x1", "x2", "x3"])
     >>> df_op = mod.predict(x_predict)
+
     """
 
     def _fit(self) -> Dict[str, Any]:
@@ -290,28 +323,44 @@ class RandomForest(Tree):
 
 class XGBoost(Tree):
     """XGBoost module.
+
     Objective:
         - Build
           `XGBoost <https://en.wikipedia.org/wiki/XGBoost>`_
           model and determine optimal k
+
     Parameters
     ----------
     df : pandas.DataFrame
+
         Pandas dataframe containing the `y_var` and `x_var`
+
     y_var : str
+
         Dependant variable
+
     x_var : List[str]
+
         Independant variables
+
     method : str, optional
+
         Can be either `classify`, `timeseries` or `regression`
         (the default is regression)
+
     k_fold : int, optional
+
         Number of cross validations folds (the default is 5)
+
     threshold : float, optional
+
          Threshold to identify significant lag values (the default is 0.05)
+
     param : dict, optional
+
         XGBoost parameters (the default is None).
         In case of None, the parameters will default to::
+
             n_estimators: [100]
             learning_rate: [0.01, 0.1, 0.2, 0.3]
             subsample: [0.5, 0.75, 1.0]
@@ -319,31 +368,43 @@ class XGBoost(Tree):
             min_child_weight: [0.5, 1.0, 3.0]
             max_depth: [int(len(self.x_var) * 0.8]
             objective: ["reg:squarederror", "binary:logistic"]
+
     ts_param : dict, optional
+
         Random forest time series parameters (the default is None).
         In case of None, the parameters will default to::
+
             threshold: 0.05
             max_lag: 20
             ts_x_var: None
             ts_lag_var: None
             seasonlity: None
+
     Returns
     -------
     model : object
+
         Final optimal model.
+
     best_params_ : Dict
+
         Best parameters amongst the given parameters.
+
     model_summary : Dict
+
         Model summary containing key metrics like R-squared, RMSE, MSE, MAE,
         MAPE for regression and Accuracy, Precision, Recall, F1 score for
         classification.
+
     Methods
     -------
     predict
+
     Example
     -------
     >>> mod = XGBoost(df=df_ip, y_var="y", x_var=["x1", "x2", "x3"])
     >>> df_op = mod.predict(x_predict)
+
     """
 
     def _fit(self) -> Dict[str, Any]:
