@@ -4,8 +4,7 @@ mllib/lib/cluster.py        103      0   100%
 mllib/lib/knn.py             70      0   100%
 mllib/lib/model.py           52      0   100%
 mllib/lib/opt.py            157      0   100%
-mllib/lib/prophet.py        105     11    90%   135, 150, 162, 290-297
 mllib/lib/timeseries.py      60      0   100%
 mllib/lib/tree.py           158      0   100%
 -------------------------------------------------------
-TOTAL                       705     11    98%
+TOTAL                       600      0   100%
