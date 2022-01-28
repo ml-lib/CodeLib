@@ -193,6 +193,7 @@ class Test_XGBoost(unittest.TestCase):
         self.assertAlmostEqual(1.0, metrics["rsq"], places=1)
         self.assertLessEqual(metrics["mape"], 0.1)
 
+
 # =============================================================================
 # --- Main
 # =============================================================================
