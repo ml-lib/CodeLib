@@ -27,7 +27,7 @@ import pandas as pd
 
 from lib import cfg, utils  # noqa: F841
 from lib.cluster import Cluster  # noqa: F841
-from lib.model import GLMNet  # noqa: F841
+from lib.glmnet import GLMNet  # noqa: F841
 from lib.knn import KNN  # noqa: F841
 from lib.tree import RandomForest  # noqa: F841
 from lib.tree import XGBoost  # noqa: F841
@@ -163,6 +163,46 @@ if __name__ == '__main__':
     op = mod.model_summary
     print("\nAutoArima timeseries\n")
     for k, v in op.items():
+        print(k, str(v).rjust(69 - len(k)))
+    print(elapsed_time("Time", start_t),
+          sep,
+          sep="\n")
+    # --- EOF
+    print(sep, elapsed_time("Total time", start), sep, sep="\n")
+    # --- Random forest time series
+    start_t = time.time_ns()
+    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
+                          sheet_name="exog")
+    df_ip = df_ip.set_index("ts")
+    mod = RandomForest(df_ip, y_var="y", x_var=["cost"], method="timeseries")
+    print("\nRandom forest timeseries\n")
+    for k, v in mod.model_summary.items():
+        print(k, str(v).rjust(69 - len(k)))
+    print(elapsed_time("Time", start_t),
+          sep,
+          sep="\n")
+    # --- XGBoost time series
+    start_t = time.time_ns()
+    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
+                          sheet_name="exog")
+    df_ip = df_ip.set_index("ts")
+    mod = XGBoost(df=df_ip, y_var="y", x_var=["cost"], method="timeseries")
+    print("\nXGBoost timeseries\n")
+    for k, v in mod.model_summary.items():
+        print(k, str(v).rjust(69 - len(k)))
+    print(elapsed_time("Time", start_t),
+          sep,
+          sep="\n")
+    # --- EOF
+    print(sep, elapsed_time("Total time", start), sep, sep="\n")
+    # --- GLMnet time series
+    start_t = time.time_ns()
+    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
+                          sheet_name="exog")
+    df_ip = df_ip.set_index("ts")
+    mod = GLMNet(df=df_ip, y_var="y", x_var=["cost"], method="timeseries")
+    print("\nGLMnet timeseries\n")
+    for k, v in mod.model_summary.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
           sep,

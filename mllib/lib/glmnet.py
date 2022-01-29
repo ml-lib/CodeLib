@@ -27,7 +27,6 @@ import sys
 from inspect import getsourcefile
 from os.path import abspath
 
-import datetime
 import pandas as pd
 import numpy as np
 
@@ -273,12 +272,8 @@ class GLMNet():
                     n_interval: int = 1) -> pd.DataFrame:
         """Predict values for time series."""
         if self.x_var is None:
-            max_id = self.ts_df.index.max()
-            dts = [x+datetime.timedelta(days=i+1)
-                   for i, x in enumerate([max_id] * n_interval)]
             df_op = [-1.0] * n_interval
-            df_op = pd.DataFrame({'ts': dts,
-                                  self.y_var: df_op}).set_index("ts")
+            df_op = pd.DataFrame(df_op)
             df_op.columns = [self.y_var]
         else:
             df_op = x_predict.copy(deep=True)
