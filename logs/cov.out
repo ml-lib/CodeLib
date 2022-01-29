@@ -1,10 +1,11 @@
 Name                      Stmts   Miss  Cover   Missing
 -------------------------------------------------------
 mllib/lib/cluster.py        103      0   100%
+mllib/lib/glmnet.py         124      0   100%
 mllib/lib/knn.py             70      0   100%
 mllib/lib/model.py           52      0   100%
 mllib/lib/opt.py            157      0   100%
 mllib/lib/timeseries.py      60      0   100%
 mllib/lib/tree.py           158      0   100%
 -------------------------------------------------------
-TOTAL                       600      0   100%
+TOTAL                       724      0   100%
