@@ -89,7 +89,7 @@ class TestGLMNet(unittest.TestCase):
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         df_ip = df_ip.set_index("ts")
-        mod = GLMNet(df=df_ip, y_var="y", method = "timeseries")
+        mod = GLMNet(df=df_ip, y_var="y", method="timeseries")
         mod.predict(n_interval=10)
         metrics = mod.model_summary
         self.assertGreaterEqual(metrics["rsq"], 0.7)
