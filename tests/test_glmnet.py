@@ -84,6 +84,7 @@ class TestGLMNet(unittest.TestCase):
         exp_op = np.array([135.0, 170.0])
         self.assertEqual((op == exp_op).all(), True)
 
+    @ignore_warnings
     def test_ts_endog(self):
         """GLMNet: Test for timeseries with endogenous variable"""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
@@ -95,6 +96,7 @@ class TestGLMNet(unittest.TestCase):
         self.assertGreaterEqual(metrics["rsq"], 0.7)
         self.assertLessEqual(metrics["mape"], 0.8)
 
+    @ignore_warnings
     def test_ts_exog(self):
         """GLMNet: Test for timeseries with exogenous variable"""
         x_var = ["cost"]

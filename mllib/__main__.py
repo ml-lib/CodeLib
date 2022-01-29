@@ -14,7 +14,7 @@ Credits
     Date: Sep 01, 2021
 """
 
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name, E0611
 
 # =============================================================================
 # --- Import libraries
@@ -34,6 +34,7 @@ from lib.tree import XGBoost  # noqa: F841
 from lib.opt import TSP  # noqa: F841
 from lib.opt import Transport  # noqa: F841
 from lib.timeseries import AutoArima  # noqa: F841
+from lib import metrics  # noqa: F841
 
 # =============================================================================
 # --- DO NOT CHANGE ANYTHING FROM HERE
@@ -155,54 +156,94 @@ if __name__ == '__main__':
           sep,
           sep="\n")
     # --- Time series
-    start_t = time.time_ns()
     df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
                           sheet_name="exog")
     df_ip = df_ip.set_index("ts")
-    mod = AutoArima(df=df_ip, y_var="y", x_var=["cost"])
-    op = mod.model_summary
+    test_len = 30
+    df_train = df_ip.iloc[:-test_len]
+    df_test = df_ip.iloc[-test_len:]
+    y_var = "y"
+    x_var = ["cp", "stock_level", "retail_price"]
+    df_op = pd.DataFrame()
+    y = df_test[y_var].values.tolist()
+    df_op["y"] = y
+    op = {}
+    # ---- ARIMA
+    start_t = time.time_ns()
+    mod = AutoArima(df=df_train, y_var=y_var, x_var=x_var)
+    if x_var is not None:
+        y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
+    else:
+        y_hat = mod.predict(n_interval=test_len)[y_var].values.tolist()
+    df_op["arima"] = y_hat
+    tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
+              "mae": round(metrics.mae(y, y_hat), 2),
+              "mape": round(metrics.mape(y, y_hat), 2),
+              "mse": round(metrics.mse(y, y_hat), 2),
+              "rmse": round(metrics.rmse(y, y_hat), 2)}
+    op["arima"] = tmp_op
     print("\nAutoArima timeseries\n")
-    for k, v in op.items():
+    for k, v in tmp_op.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
           sep,
           sep="\n")
-    # --- EOF
-    print(sep, elapsed_time("Total time", start), sep, sep="\n")
     # --- Random forest time series
     start_t = time.time_ns()
-    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
-                          sheet_name="exog")
-    df_ip = df_ip.set_index("ts")
-    mod = RandomForest(df_ip, y_var="y", x_var=["cost"], method="timeseries")
+    mod = RandomForest(df_train, y_var=y_var, x_var=x_var, method="timeseries")
     print("\nRandom forest timeseries\n")
-    for k, v in mod.model_summary.items():
+    if x_var is not None:
+        y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
+    else:
+        y_hat = mod.predict(n_interval=test_len)[y_var].values.tolist()
+    df_op["rf"] = y_hat
+    tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
+              "mae": round(metrics.mae(y, y_hat), 2),
+              "mape": round(metrics.mape(y, y_hat), 2),
+              "mse": round(metrics.mse(y, y_hat), 2),
+              "rmse": round(metrics.rmse(y, y_hat), 2)}
+    op["rf"] = tmp_op
+    for k, v in tmp_op.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
           sep,
           sep="\n")
     # --- XGBoost time series
     start_t = time.time_ns()
-    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
-                          sheet_name="exog")
-    df_ip = df_ip.set_index("ts")
-    mod = XGBoost(df=df_ip, y_var="y", x_var=["cost"], method="timeseries")
+    mod = XGBoost(df_train, y_var=y_var, x_var=x_var, method="timeseries")
     print("\nXGBoost timeseries\n")
-    for k, v in mod.model_summary.items():
+    if x_var is not None:
+        y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
+    else:
+        y_hat = mod.predict(n_interval=test_len)[y_var].values.tolist()
+    df_op["xgb"] = y_hat
+    tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
+              "mae": round(metrics.mae(y, y_hat), 2),
+              "mape": round(metrics.mape(y, y_hat), 2),
+              "mse": round(metrics.mse(y, y_hat), 2),
+              "rmse": round(metrics.rmse(y, y_hat), 2)}
+    op["xgb"] = tmp_op
+    for k, v in tmp_op.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
           sep,
           sep="\n")
-    # --- EOF
-    print(sep, elapsed_time("Total time", start), sep, sep="\n")
     # --- GLMnet time series
     start_t = time.time_ns()
-    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
-                          sheet_name="exog")
-    df_ip = df_ip.set_index("ts")
-    mod = GLMNet(df=df_ip, y_var="y", x_var=["cost"], method="timeseries")
-    print("\nGLMnet timeseries\n")
-    for k, v in mod.model_summary.items():
+    mod = GLMNet(df_train, y_var=y_var, x_var=x_var, method="timeseries")
+    print("\nGLMNet timeseries\n")
+    if x_var is not None:
+        y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
+    else:
+        y_hat = mod.predict(n_interval=test_len)[y_var].values.tolist()
+    df_op["glmnet"] = y_hat
+    tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
+              "mae": round(metrics.mae(y, y_hat), 2),
+              "mape": round(metrics.mape(y, y_hat), 2),
+              "mse": round(metrics.mse(y, y_hat), 2),
+              "rmse": round(metrics.rmse(y, y_hat), 2)}
+    op["glmnet"] = tmp_op
+    for k, v in tmp_op.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
           sep,
