@@ -267,7 +267,7 @@ class FBP():
         tuning_results = pd.DataFrame(all_params)
         tuning_results['rmse'] = rmses
         best_param = \
-            tuning_results[tuning_results.rmse == \
+            tuning_results[tuning_results.rmse ==
                            tuning_results["rmse"].min()].iloc[0].to_dict()
         del best_param['rmse']
         model = self._model(best_param)
