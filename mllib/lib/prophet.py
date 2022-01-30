@@ -122,7 +122,7 @@ class FBP():
                  x_var: List[str] = None,
                  ds: str = "ds",
                  hols_country: str = None,
-                 holidays = None,
+                 holidays:pd.DataFrame = None,
                  param: Dict = None):
         """Initialize variables."""
         self.y_var = y_var
@@ -241,7 +241,7 @@ class FBP():
     def _model(self, params: dict) -> object:
         """Generate model object."""
         with suppress_stdout_stderr():
-            model = Prophet(holidays = self.holidays, **params)
+            model = Prophet(holidays=self.holidays, **params)
         if self.x_var is not None:
             for var in self.x_var:
                 model.add_regressor(var)
@@ -255,7 +255,7 @@ class FBP():
         """Fit model."""
         # Find best params
         # Generate all combinations of parameters
-        all_params = [dict(zip(self.param.keys(), v)) for v in \
+        all_params = [dict(zip(self.param.keys(), v)) for v in
                       itertools.product(*self.param.values())]
         rmses = []
         for params in all_params:
@@ -297,4 +297,3 @@ class FBP():
         y_hat = forecast['yhat'].values.tolist()
         df_op.insert(loc=0, column=self.y_var, value=y_hat)
         return df_op
-    
