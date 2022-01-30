@@ -85,7 +85,7 @@ class TestFBP(unittest.TestCase):
                   y_var="y",
                   x_var=["cost", "stock_level", "retail_price"],
                   ds="ts",
-                  hols_country = 'US',
+                  hols_country='US',
                   param=param)
         op = mod.model_summary
         self.assertAlmostEqual(0.99, op["rsq"], places=1)
