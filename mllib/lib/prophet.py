@@ -122,7 +122,7 @@ class FBP():
                  x_var: List[str] = None,
                  ds: str = "ds",
                  hols_country: str = None,
-                 holidays:pd.DataFrame = None,
+                 holidays: pd.DataFrame = None,
                  param: Dict = None):
         """Initialize variables."""
         self.y_var = y_var
