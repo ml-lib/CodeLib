@@ -35,6 +35,7 @@ from lib.opt import TSP  # noqa: F841
 from lib.opt import Transport  # noqa: F841
 from lib.timeseries import AutoArima  # noqa: F841
 from lib.prophet import FBP  # noqa: F841
+from lib.gam import GAM  # noqa: F841
 from lib import metrics  # noqa: F841
 
 # =============================================================================
@@ -259,9 +260,27 @@ if __name__ == '__main__':
     mod = FBP(df_train, y_var=y_var, x_var=x_var, ds="ts", param=param)
     print("\nProphet\n")
     if x_var is not None:
-        y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
+        y_hat = mod.predict(df_test[x_var + ['ts']])[y_var].values.tolist()
     else:
         y_hat = mod.predict(n_interval=test_len)[y_var].values.tolist()
+    df_op["prophet"] = y_hat
+    tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
+              "mae": round(metrics.mae(y, y_hat), 2),
+              "mape": round(metrics.mape(y, y_hat), 2),
+              "mse": round(metrics.mse(y, y_hat), 2),
+              "rmse": round(metrics.rmse(y, y_hat), 2)}
+    op["prophet"] = tmp_op
+    for k, v in tmp_op.items():
+        print(k, str(v).rjust(69 - len(k)))
+    print(elapsed_time("Time", start_t),
+          sep,
+          sep="\n")
+    # --- GAM
+    start_t = time.time_ns()
+    linear_var = x_var
+    mod = GAM(df_train, y_var, x_var, linear_var=linear_var)
+    print("\nGAM\n")
+    y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
     df_op["prophet"] = y_hat
     tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
               "mae": round(metrics.mae(y, y_hat), 2),
