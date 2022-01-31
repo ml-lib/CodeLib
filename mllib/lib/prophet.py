@@ -155,6 +155,7 @@ class FBP():
         self.y_var = y_var
         self.x_var = x_var
         self.ds = ds
+        self.original_ds = ds
         self.df = df.reset_index(drop=True)
         if param is None:
             param = {"interval_width": [0.95],
@@ -342,8 +343,15 @@ class FBP():
         if self.x_var is None:
             x_predict = self.model.make_future_dataframe(periods=n_interval)
             x_predict = x_predict.iloc[-n_interval:, :]
+        else:
+            x_predict[self.original_ds] = \
+                pd.to_datetime(x_predict[self.original_ds])
+            x_predict = x_predict[[self.original_ds] + self.x_var]
+            x_predict.rename(columns = {self.original_ds:self.ds},
+                             inplace = True)
         df_op = x_predict.copy(deep=True)
         forecast = self.model.predict(x_predict)
         y_hat = forecast['yhat'].values.tolist()
         df_op.insert(loc=0, column=self.y_var, value=y_hat)
+        df_op.rename(columns = {self.ds:self.original_ds}, inplace = True)
         return df_op

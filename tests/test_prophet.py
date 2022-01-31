@@ -62,7 +62,7 @@ class TestFBP(unittest.TestCase):
 
     @ignore_warnings
     def test_multivariate(self):
-        """TimeSeries: Test for multivariate."""
+        """FBP: Test for multivariate."""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         param = {"interval_width": [0.95],
@@ -74,11 +74,12 @@ class TestFBP(unittest.TestCase):
                   ds="ts",
                   param=param)
         op = mod.model_summary
+        mod.predict(df_ip)
         self.assertAlmostEqual(0.99, op["rsq"], places=1)
 
     @ignore_warnings
     def test_holiday_country(self):
-        """TimeSeries: Test for holidays."""
+        """FBP: Test for holidays."""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         param = {"interval_width": [0.95],
@@ -95,7 +96,7 @@ class TestFBP(unittest.TestCase):
 
     @ignore_warnings
     def test_univariate(self):
-        """TimeSeries: Test for univariate."""
+        """FBP: Test for univariate."""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         mod = FBP(df=df_ip, y_var="y", ds="ts")
