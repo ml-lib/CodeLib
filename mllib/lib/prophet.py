@@ -347,11 +347,11 @@ class FBP():
             x_predict[self.original_ds] = \
                 pd.to_datetime(x_predict[self.original_ds])
             x_predict = x_predict[[self.original_ds] + self.x_var]
-            x_predict.rename(columns = {self.original_ds:self.ds},
-                             inplace = True)
+            x_predict.rename(columns={self.original_ds: self.ds},
+                             inplace=True)
         df_op = x_predict.copy(deep=True)
         forecast = self.model.predict(x_predict)
         y_hat = forecast['yhat'].values.tolist()
         df_op.insert(loc=0, column=self.y_var, value=y_hat)
-        df_op.rename(columns = {self.ds:self.original_ds}, inplace = True)
+        df_op.rename(columns={self.ds: self.original_ds}, inplace=True)
         return df_op

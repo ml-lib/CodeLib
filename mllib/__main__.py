@@ -279,7 +279,7 @@ if __name__ == '__main__':
     start_t = time.time_ns()
     linear_var = x_var
     mod = GAM(df_train, y_var, x_var, linear_var=linear_var)
-    print("\nGAM\n")
+    print("\nGeneral additive models\n")
     y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
     df_op["prophet"] = y_hat
     tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
