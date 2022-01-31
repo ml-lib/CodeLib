@@ -16,6 +16,7 @@ Credits
 # pylint: disable=wrong-import-position
 
 import unittest
+import warnings
 import re
 import sys
 
@@ -43,12 +44,24 @@ path = path + "/data/input/"
 # =============================================================================
 
 
+def ignore_warnings(test_func):
+    """Suppress warnings."""
+
+    def do_test(self, *args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            test_func(self, *args, **kwargs)
+
+    return do_test
+
+
 class TestGLMNet(unittest.TestCase):
     """Test suite for module ``GAM``."""
 
     def setUp(self):
         """Set up for module ``GAM``."""
 
+    @ignore_warnings
     def test_gam_exog(self):
         """GAM: Test with exogenous variable"""
         x_var = ["day_of_week", "cp", "stock_level", "retail_price"]
@@ -60,12 +73,13 @@ class TestGLMNet(unittest.TestCase):
         df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
         df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
         df_test = df_test[x_var]
-        mod = GAM(df_train, y_var, x_var, splines = 100)
+        mod = GAM(df_train, y_var, x_var, splines=100)
         mod.predict(df_test)
         metrics = mod.model_summary
         self.assertGreaterEqual(metrics["rsq"], 0.9)
         self.assertLessEqual(metrics["mape"], 0.4)
 
+    @ignore_warnings
     def test_gam_liear_cubic_var(self):
         """GAM: Test for linear and cubic order fit"""
         x_var = ["day_of_week", "cp", "stock_level", "retail_price"]
@@ -79,7 +93,7 @@ class TestGLMNet(unittest.TestCase):
         df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
         df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
         df_test = df_test[x_var]
-        mod = GAM(df_train, y_var, x_var, linear_var, cubic_var, splines = 100)
+        mod = GAM(df_train, y_var, x_var, linear_var, cubic_var, splines=100)
         mod.predict(df_test)
         metrics = mod.model_summary
         self.assertGreaterEqual(metrics["rsq"], 0.9)

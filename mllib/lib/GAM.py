@@ -3,7 +3,7 @@ GAM module.
 
 **Available routines:**
 
-- class ``GAM``: Builds GAM model using grid search
+    - class ``GAM``: Builds GAM model using grid search
 
 Credits
 -------
@@ -17,7 +17,7 @@ Credits
 """
 
 # pylint: disable=invalid-name
-# pylint: disable=R0902,R0903,R0913,C0413,W0511
+# pylint: disable=R0902,R0903,R0913,C0413,W0122,W0511,W0611
 
 from typing import List
 
@@ -29,7 +29,7 @@ from os.path import abspath
 import pandas as pd
 import numpy as np
 
-from pygam import LinearGAM, s, l # pragma: no cover
+from pygam import LinearGAM, s, l  # noqa: F841
 
 path = abspath(getsourcefile(lambda: 0))
 path = re.sub(r"(.+\/)(.+.py)", "\\1", path)
