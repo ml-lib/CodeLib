@@ -188,7 +188,7 @@ class Cluster():
         # Create results dataframe
         df_summary = pd.DataFrame({"cluster": [], "gap": [], "sk": []})
         # Create new random reference set
-        dict_nref = dict()
+        dict_nref = {}
         for nref_index in range(self.nrefs):
             dict_nref[nref_index] = self._nref()
         # Compute gap statistic

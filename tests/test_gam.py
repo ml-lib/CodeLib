@@ -55,7 +55,7 @@ def ignore_warnings(test_func):
     return do_test
 
 
-class TestGLMNet(unittest.TestCase):
+class TestGAM(unittest.TestCase):
     """Test suite for module ``gam``."""
 
     def setUp(self):
@@ -80,7 +80,7 @@ class TestGLMNet(unittest.TestCase):
         self.assertLessEqual(metrics["mape"], 0.4)
 
     @ignore_warnings
-    def test_gam_liear_cubic_var(self):
+    def test_gam_linear_cubic_variable(self):
         """GAM: Test for linear and cubic order fit"""
         x_var = ["day_of_week", "cp", "stock_level", "retail_price"]
         y_var = "y"
