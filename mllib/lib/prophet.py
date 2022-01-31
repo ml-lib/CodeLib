@@ -1,13 +1,17 @@
 """
 Time series module.
+
 **Available routines:**
-- class ``FBP``: Builds time series model using fbprophet.
+    - class ``FBP``: Builds time series model using fbprophet.
+
 Credits
 -------
 ::
+
     Authors:
         - Diptesh
         - Madhu
+
     Date: Jan 30, 2022
 """
 
@@ -46,10 +50,12 @@ os.environ['NUMEXPR_MAX_THREADS'] = '8'
 class suppress_stdout_stderr(object):
     """
     Suppress fbprophet stdout.
+
     A context manager for doing a "deep suppression" of stdout and stderr in
     Python, i.e. will suppress all print, even if the print originates in a
     compiled C/Fortran sub-function.
-       This will not suppress raised exceptions, since exceptions are printed
+
+    This will not suppress raised exceptions, since exceptions are printed
     to stderr just before a script exits, and after the context manager has
     exited (at least, I think that is why it lets exceptions through).
     """
@@ -79,41 +85,62 @@ class suppress_stdout_stderr(object):
 
 class FBP():
     """prophet module.
+
     Parameters
     ----------
     df: pandas.DataFrame
+
         Pandas dataframe containing the `y_var`, `ds` and `x_var`
+
     y_var: str
+
         Dependant variable
+
     x_var: List[str], optional
+
         Independant variables (the default is None).
+
     ds: str, optional
+
         Column name of the date variable (the default is None).
+
     hols_country: str, optional
+
         Country for which holiday events should be considered
         (the default is None).
+
     holidays: pandad.DataFrame, optional
+
         Pandas dataframe containing the `holiday`, `ds`, 'lower_window'
         and 'upper_window'
+
     param: dict, optional, Not implemented yet
+
         Time series parameters (the default is None).
+
     Returns
     -------
     model: object
+
         Final optimal model.
+
     model_summary: Dict
+
         Model summary containing key metrics like R-squared, RMSE, MSE, MAE,
         MAPE.
+
     Methods
     -------
     predict
+
     Example
     -------
-    >> > mod = TimeSeries(df=df_ip,
+    >>> mod = TimeSeries(df=df_ip,
                          y_var="y",
                          x_var=["cost", "stock_level", "retail_price"],
                          ds="ds")
-    >> > df_op = mod.predict(x_predict)
+    >>> df_op = mod.predict(x_predict)
+
     """
 
     def __init__(self,
@@ -145,6 +172,7 @@ class FBP():
             self.betas = self._regressor_coefficients(self.model)
 
     def _pre_processing(self):
+        """Pre-process data."""
         self.df[self.ds] = pd.to_datetime(self.df[self.ds])
         if self.x_var is None:
             self.df = self.df[[self.ds] + [self.y_var]]
@@ -174,16 +202,23 @@ class FBP():
     def _regressor_index(m, name):
         """
         Given the name of a regressor, return its index in the `beta` matrix.
+
         Parameters
         ----------
         m: object
+
             Prophet model object, after fitting.
+
         name: str
+
             Name of the regressor, as passed into the `add_regressor` function.
+
         Returns
         -------
         int
+
             The column index of the regressor in the `beta` matrix.
+
         """
         op = np.extract(m.train_component_cols[name] == 1,
                         m.train_component_cols.index)[0]
@@ -192,27 +227,35 @@ class FBP():
     def _regressor_coefficients(self, m):  # pragma: no cover
         """
         Summarise the coefficients of the extra regressors used in the model.
+
         For additive regressors, the coefficient represents the incremental
         impact on `y` of a unit increase in the regressor. For multiplicative
         regressors, the incremental impact is equal to `trend(t)` multiplied
         by the coefficient.
         Coefficients are measured on the original scale of the training data.
+
         Parameters
         ----------
         m: object
+
             Prophet model object, after fitting.
+
         Returns
         -------
         pd.DataFrame
-        containing: :
+
+        containing::
+
             regressor: Name of the regressor
             regressor_mode: Additive/multiplicative effect on y
             center: The mean of the regressor if standardized else 0
             coef_lower: Lower bound for the coefficient
             coef: Expected value of the coefficient
             coef_upper: Upper bound for the coefficient
+
         coef_lower/upper are estimated from MCMC samples.
         It is only different to coef if mcmc_samples > 0.
+
         """
         assert len(m.extra_regressors) > 0, 'No extra regressors found.'
         coefs = []
@@ -255,7 +298,7 @@ class FBP():
         """Fit model."""
         # Find best params
         # Generate all combinations of parameters
-        all_params = [dict(zip(self.param.keys(), v)) for v in
+        all_params = [dict(zip(self.param.keys(), param_key)) for param_key in
                       itertools.product(*self.param.values())]
         rmses = []
         for params in all_params:
@@ -267,8 +310,8 @@ class FBP():
         tuning_results = pd.DataFrame(all_params)
         tuning_results['rmse'] = rmses
         best_param = \
-            tuning_results[tuning_results.rmse ==
-                           tuning_results["rmse"].min()].iloc[0].to_dict()
+            tuning_results[tuning_results.rmse
+                           == tuning_results["rmse"].min()].iloc[0].to_dict()
         del best_param['rmse']
         model = self._model(best_param)
         self.model = model
@@ -278,16 +321,23 @@ class FBP():
                 x_predict: pd.DataFrame = None,
                 n_interval: int = 1) -> pd.DataFrame:
         """Predict module.
+
         Parameters
         ----------
         x_predict : pd.DataFrame, optional
+
             Pandas dataframe containing `ds` and `x_var` (the default is None).
+
         n_interval : int, optional
+
             Number of time period to predict (the default is 1).
+
         Returns
         -------
         pd.DataFrame
+
             Pandas dataframe containing `y_var`, `ds` and `x_var`.
+
         """
         if self.x_var is None:
             x_predict = self.model.make_future_dataframe(periods=n_interval)

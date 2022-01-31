@@ -1,11 +1,14 @@
 """
 Test suite module for ``prophet``.
+
 Credits
 -------
 ::
+
     Authors:
         - Diptesh
         - Madhu
+
     Date: Jan 30, 2022
 """
 
