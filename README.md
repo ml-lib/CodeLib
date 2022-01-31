@@ -28,6 +28,7 @@
     1. Time series
         1. [ARIMA](./mllib/lib/timeseries.py)
         1. [Prophet](./mllib/lib/prophet.py)
+        1. [General additive models](./mllib/lib/gam.py)
 1. [Pull request guidelines](./.github/PULL_REQUEST_TEMPLATE.md)
 1. [Initial setup](./README.md#initial-setup)
 1. [Unit tests](./README.md#run-unit-tests-and-pylint-ratings)
