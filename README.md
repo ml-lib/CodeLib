@@ -25,7 +25,9 @@
     1. [XGBoost](./mllib/lib/tree.py) - classification/regression
     1. [Traveling salesman problem](./mllib/lib/opt.py) - integer programming/heuristic
     1. [Transportation problem](./mllib/lib/opt.py) - integer programming
-    1. [Time series](./mllib/lib/timeseries.py)
+    1. Time series
+        1. [ARIMA](./mllib/lib/timeseries.py)
+        1. [Prophet](./mllib/lib/prophet.py)
 1. [Pull request guidelines](./.github/PULL_REQUEST_TEMPLATE.md)
 1. [Initial setup](./README.md#initial-setup)
 1. [Unit tests](./README.md#run-unit-tests-and-pylint-ratings)
