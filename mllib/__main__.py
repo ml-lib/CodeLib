@@ -281,13 +281,13 @@ if __name__ == '__main__':
     mod = GAM(df_train, y_var, x_var, linear_var=linear_var)
     print("\nGeneral additive models\n")
     y_hat = mod.predict(df_test[x_var])[y_var].values.tolist()
-    df_op["prophet"] = y_hat
+    df_op["gam"] = y_hat
     tmp_op = {"rsq": round(metrics.rsq(y, y_hat), 2),
               "mae": round(metrics.mae(y, y_hat), 2),
               "mape": round(metrics.mape(y, y_hat), 2),
               "mse": round(metrics.mse(y, y_hat), 2),
               "rmse": round(metrics.rmse(y, y_hat), 2)}
-    op["prophet"] = tmp_op
+    op["gam"] = tmp_op
     for k, v in tmp_op.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
