@@ -80,7 +80,6 @@ class Test_RandomForest(unittest.TestCase):
         acc = round(sk_metrics.accuracy_score(y, y_hat), 2)
         self.assertGreaterEqual(acc, 0.93)
 
-    @ignore_warnings
     def test_rf_reg(self):
         """RandomForest: Test for regression."""
         x_var = ["x1", "x2", "x3", "x4"]
@@ -97,6 +96,35 @@ class Test_RandomForest(unittest.TestCase):
         mse = round(sk_metrics.mean_squared_error(y, y_hat), 2)
         self.assertLessEqual(mse, 0.1)
 
+    def test_rf_ts_exog(self):
+        """RandomForest: Test for time series with exogenous variables"""
+        x_var = ["cost"]
+        y_var = "y"
+        test_perc = 0.2
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
+        df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
+        df_test = df_test[x_var]
+        mod = RandomForest(df_train, y_var, x_var, method="timeseries")
+        mod.predict(df_test)
+        metrics = mod.model_summary
+        self.assertGreaterEqual(metrics["rsq"], 0.8)
+        self.assertLessEqual(metrics["mape"], 0.5)
+
+    def test_rf_ts_endog(self):
+        """RandomForest: Test for time series with endogenous variable"""
+        y_var = "y"
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        mod = RandomForest(df_ip, y_var, method="timeseries")
+        mod.predict()
+        metrics = mod.model_summary
+        self.assertGreaterEqual(metrics["rsq"], 0.7)
+        self.assertLessEqual(metrics["mape"], 0.7)
+
 
 class Test_XGBoost(unittest.TestCase):
     """Test suite for module ``XGBoost``."""
@@ -104,7 +132,6 @@ class Test_XGBoost(unittest.TestCase):
     def setUp(self):
         """Set up for module ``XGBoost``."""
 
-    @ignore_warnings
     def test_xgboost_class(self):
         """XGBoost: Test for classification."""
         x_var = ["x1", "x2"]
@@ -121,7 +148,6 @@ class Test_XGBoost(unittest.TestCase):
         acc = round(sk_metrics.accuracy_score(y, y_hat), 2)
         self.assertGreaterEqual(acc, 0.93)
 
-    @ignore_warnings
     def test_xgboost_reg(self):
         """XGBoost: Test for regression."""
         x_var = ["x1", "x2", "x3", "x4"]
@@ -137,6 +163,35 @@ class Test_XGBoost(unittest.TestCase):
         y = df_test[y_var].values.tolist()
         mse = round(sk_metrics.mean_squared_error(y, y_hat), 2)
         self.assertLessEqual(mse, 0.5)
+
+    def test_xgboost_ts_exog(self):
+        """XGBoost: Test for time series with exogenous variables"""
+        x_var = ["cost"]
+        y_var = "y"
+        test_perc = 0.2
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
+        df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
+        df_test = df_test[x_var]
+        mod = XGBoost(df_train, y_var, x_var, method="timeseries")
+        mod.predict(df_test)
+        metrics = mod.model_summary
+        self.assertAlmostEqual(1.0, metrics["rsq"], places=1)
+        self.assertLessEqual(metrics["mape"], 0.1)
+
+    def test_xgboost_ts_endog(self):
+        """XGBoost: Test for time series with endogenous variable"""
+        y_var = "y"
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        mod = XGBoost(df_ip, y_var, method="timeseries")
+        mod.predict()
+        metrics = mod.model_summary
+        self.assertAlmostEqual(1.0, metrics["rsq"], places=1)
+        self.assertLessEqual(metrics["mape"], 0.1)
 
 
 # =============================================================================

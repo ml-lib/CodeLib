@@ -12,7 +12,7 @@ Credits
 """
 
 # pylint: disable=invalid-name
-# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-position, E0611
 
 import unittest
 import warnings

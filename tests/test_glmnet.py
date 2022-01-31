@@ -1,5 +1,5 @@
 """
-Test suite module for ``model``.
+Test suite module for ``glmnet``.
 
 Credits
 -------
@@ -7,8 +7,9 @@ Credits
 
     Authors:
         - Diptesh
+        - Madhu
 
-    Date: Sep 07, 2021
+    Date: Jan 28, 2022
 """
 
 # pylint: disable=invalid-name
@@ -31,7 +32,7 @@ path = re.sub(r"(.+)(\/tests.*)", "\\1", path)
 
 sys.path.insert(0, path)
 
-from mllib.lib.model import GLMNet  # noqa: F841
+from mllib.lib.glmnet import GLMNet  # noqa: F841
 
 # =============================================================================
 # --- DO NOT CHANGE ANYTHING FROM HERE
@@ -65,7 +66,7 @@ class TestGLMNet(unittest.TestCase):
         """GLMNet: Test a known equation"""
         df_ip = pd.read_csv(path + "test_glmnet.csv")
         mod = GLMNet(df=df_ip, y_var="y", x_var=["x1", "x2", "x3"])
-        op = mod.opt
+        op = mod.best_params_
         self.assertEqual(np.round(op.get("intercept"), 0), 100.0)
         self.assertEqual(np.round(op.get("coef")[0], 0), 2.0)
         self.assertEqual(np.round(op.get("coef")[1], 0), 3.0)
@@ -82,6 +83,36 @@ class TestGLMNet(unittest.TestCase):
         op = np.round(np.array(op["y"]), 1)
         exp_op = np.array([135.0, 170.0])
         self.assertEqual((op == exp_op).all(), True)
+
+    @ignore_warnings
+    def test_ts_endog(self):
+        """GLMNet: Test for timeseries with endogenous variable"""
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        mod = GLMNet(df=df_ip, y_var="y", method="timeseries")
+        mod.predict(n_interval=10)
+        metrics = mod.model_summary
+        self.assertGreaterEqual(metrics["rsq"], 0.7)
+        self.assertLessEqual(metrics["mape"], 0.8)
+
+    @ignore_warnings
+    def test_ts_exog(self):
+        """GLMNet: Test for timeseries with exogenous variable"""
+        x_var = ["cost"]
+        y_var = "y"
+        test_perc = 0.2
+        df_ip = pd.read_excel(path + "test_time_series.xlsx",
+                              sheet_name="exog")
+        df_ip = df_ip.set_index("ts")
+        df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
+        df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
+        df_test = df_test[x_var]
+        mod = GLMNet(df_train, y_var, x_var, method="timeseries")
+        mod.predict(df_test)
+        metrics = mod.model_summary
+        self.assertAlmostEqual(metrics["rsq"], 1, places=1)
+        self.assertLessEqual(metrics["mape"], 0.1)
 
 
 # =============================================================================
