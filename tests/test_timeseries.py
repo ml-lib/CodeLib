@@ -60,13 +60,13 @@ def ignore_warnings(test_func):
 
 # TODO: Change integration tests.
 class TestTimeSeries(unittest.TestCase):
-    """Test suite for module ``TimeSeries``."""
+    """Test suite for module ``timeseries``."""
 
     def setUp(self):
-        """Set up for module ``TimeSeries``."""
+        """Set up for module ``timeseries``."""
 
     def test_multivariate(self):
-        """TimeSeries: Test for multivariate"""
+        """AutoArima: Test for multivariate"""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         df_ip = df_ip.set_index("ts")
@@ -83,7 +83,7 @@ class TestTimeSeries(unittest.TestCase):
         self.assertAlmostEqual(op, exp_op, places=0)
 
     def test_univariate(self):
-        """TimeSeries: Test for univariate"""
+        """AutoArima: Test for univariate"""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="endog")
         df_ip = df_ip.set_index("ts")

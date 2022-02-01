@@ -44,7 +44,7 @@ import re
 from inspect import getsourcefile
 from os.path import abspath
 
-__version__: str = "0.4.0"
+__version__: str = "0.4.1"
 __doc__: str = "Machine Learning Library"
 module: str = "mllib"
 

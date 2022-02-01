@@ -1,10 +1,12 @@
 Name                                                            Stmts   Miss  Cover   Missing
 ---------------------------------------------------------------------------------------------
 /media/ph33r/Data/Project/CodeLib/Git/mllib/lib/cluster.py        103      0   100%
+/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/gam.py             60      0   100%
+/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/glmnet.py         121      0   100%
 /media/ph33r/Data/Project/CodeLib/Git/mllib/lib/knn.py             70      0   100%
-/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/model.py           52      0   100%
 /media/ph33r/Data/Project/CodeLib/Git/mllib/lib/opt.py            157      0   100%
+/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/prophet.py        110      0   100%
 /media/ph33r/Data/Project/CodeLib/Git/mllib/lib/timeseries.py      60      0   100%
-/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/tree.py            79      0   100%
+/media/ph33r/Data/Project/CodeLib/Git/mllib/lib/tree.py           158      0   100%
 ---------------------------------------------------------------------------------------------
-TOTAL                                                             521      0   100%
+TOTAL                                                             839      0   100%
