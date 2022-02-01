@@ -55,14 +55,17 @@ class TSP:
     Methods
     -------
     :func:`~opt.TSP.integer_program`
-      Determining optimal path using integer programming.
+
+        Determining optimal path using integer programming.
 
     :func:`~opt.TSP.nearest_neighbour`
-      Determining optimal path using nearest neighbour algorithm.
+
+        Determining optimal path using nearest neighbour algorithm.
 
     :func:`~opt.TSP.solve`
-      Determining optimal path using integer programming or nearest neighbour
-      algorithm based on count of locations.
+
+        Determining optimal path using integer programming or nearest neighbour
+        algorithm based on count of locations.
 
     """
 
@@ -205,9 +208,9 @@ class TSP:
 
         """
         # Initiate IP formulation model
-        model = pulp.LpProblem("Travelling Salesman Problem", pulp.LpMinimize)
+        model = pulp.LpProblem("Travelling_Salesman_Problem", pulp.LpMinimize)
         # Decision variables - 1 if chosen, 0 otherwise
-        dv_leg = pulp.LpVariable.dicts("Decision variable leg", dist,
+        dv_leg = pulp.LpVariable.dicts("Decision_variable_leg", dist,
                                        lowBound=0, upBound=1, cat='Binary')
         # Objective function - Minimize total distance
         model += pulp.lpSum([dv_leg[(i, j)] * dist[(i, j)] for (i, j) in dist])
@@ -219,7 +222,7 @@ class TSP:
             model += pulp.lpSum([dv_leg[(k, i)]
                                  for i in loc if (k, i) in dv_leg]) == 1
         # Con 03: Eliminate subtours
-        u = pulp.LpVariable.dicts("Relative position of each tour leg", loc,
+        u = pulp.LpVariable.dicts("Relative_position_of_each_tour_leg", loc,
                                   lowBound=0, upBound=len(loc)-1,
                                   cat='Integer')
         for i in loc:
@@ -587,7 +590,7 @@ class Transport():
         supply_node = supply.keys()
         demand_node = demand.keys()
         # Integer programming
-        model = pulp.LpProblem("Transportation problem", pulp.LpMinimize)
+        model = pulp.LpProblem("Transportation_problem", pulp.LpMinimize)
         Routes = [(s, d) for s in supply_node for d in demand_node]
         route_vars = pulp.LpVariable.dicts("Route",
                                            (supply_node, demand_node),
