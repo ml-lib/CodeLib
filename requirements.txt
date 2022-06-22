@@ -2,7 +2,7 @@ fbprophet==0.6
 openpyxl==3.0.5
 xlrd==1.2.0
 pmdarima==1.8.1
-numpy==1.21.2
+numpy==1.22.0
 statsmodels==0.13.1
 PuLP==2.6.0
 pygam==0.8.0
