@@ -5,9 +5,9 @@ Author
 ------
 ::
 
-    Author: Diptesh
-
+    Author: Diptesh Basak
     Date: Jun 16, 2019
+    License: BSD 3-Clause
 """
 
 # pylint: disable=invalid-name
@@ -38,7 +38,7 @@ from mllib.lib.opt import Transport  # noqa: F841
 # =============================================================================
 
 
-class TestTravelingSalesmanProblem(unittest.TestCase):
+class Test_TSP(unittest.TestCase):
     """Test suite for TSP module."""
 
     def setUp(self):
@@ -68,7 +68,7 @@ class TestTravelingSalesmanProblem(unittest.TestCase):
         self.assertEqual(np.round(opt[1], 0), 1402.0)
 
 
-class TestTransportationProblem(unittest.TestCase):
+class Test_TP(unittest.TestCase):
     """Test suite for transportation problem."""
 
     def setUp(self):

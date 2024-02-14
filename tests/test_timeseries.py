@@ -60,13 +60,13 @@ def ignore_warnings(test_func):
 
 # TODO: Change integration tests.
 class TestTimeSeries(unittest.TestCase):
-    """Test suite for module ``timeseries``."""
+    """Test suite for module ``TimeSeries``."""
 
     def setUp(self):
-        """Set up for module ``timeseries``."""
+        """Set up for module ``TimeSeries``."""
 
     def test_multivariate(self):
-        """AutoArima: Test for multivariate"""
+        """TimeSeries: Test for multivariate"""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="exog")
         df_ip = df_ip.set_index("ts")
@@ -75,7 +75,7 @@ class TestTimeSeries(unittest.TestCase):
         mod = AutoArima(df=df_ip, y_var=y_var, x_var=x_var)
         metrics = mod.model_summary
         X = pd.DataFrame(df_ip.iloc[-1]).T
-        op = mod.predict(x_predict=X[x_var])[y_var][0]
+        op = mod.predict(x_predict=X[x_var])[y_var].iloc[0]
         exp_op = X[y_var][0]
         self.assertEqual(mod.opt_param["order"], (0, 1, 1))
         self.assertAlmostEqual(1.0, metrics["rsq"], places=1)
@@ -83,7 +83,7 @@ class TestTimeSeries(unittest.TestCase):
         self.assertAlmostEqual(op, exp_op, places=0)
 
     def test_univariate(self):
-        """AutoArima: Test for univariate"""
+        """TimeSeries: Test for univariate"""
         df_ip = pd.read_excel(path + "test_time_series.xlsx",
                               sheet_name="endog")
         df_ip = df_ip.set_index("ts")

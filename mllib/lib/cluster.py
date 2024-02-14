@@ -201,12 +201,12 @@ class Cluster():
                 # Create new random reference set
                 random_ref = dict_nref[nref_index]
                 # Fit to it
-                kmeans_ref = KMeans(k, random_state=self.seed)
+                kmeans_ref = KMeans(k, random_state=self.seed, n_init=10)
                 kmeans_ref.fit(random_ref)
                 ref_disp = kmeans_ref.inertia_
                 ref_disps[nref_index] = ref_disp
             # Fit cluster to original data and create dispersion
-            kmeans_orig = KMeans(k, random_state=self.seed)
+            kmeans_orig = KMeans(k, random_state=self.seed, n_init=10)
             kmeans_orig.fit(df_clus_ip)
             orig_disp = kmeans_orig.inertia_
             # Calculate gap statistic
@@ -221,20 +221,25 @@ class Cluster():
             # Assign this loop's gap statistic and sk to gaps and sks
             gaps[gap_index] = gap
             sks[gap_index] = sk
-            df_summary = df_summary.append({"cluster": k,
-                                            "gap": gap,
-                                            "sk": sk},
-                                           ignore_index=True)
+            # df_summary = df_summary.append({"cluster": k,
+            #                                 "gap": gap,
+            #                                 "sk": sk},
+            #                                ignore_index=True)
+            df_summary = pd.concat([df_summary,
+                                    pd.DataFrame({"cluster": [k],
+                                                  "gap": [gap],
+                                                  "sk": [sk]})],
+                                   ignore_index=True)
             # Stopping criteria
             if self.method == "one_se":
                 if k > 1 and gaps[gap_index-1] >= gap - sk:
                     opt_k = k-1
-                    km = KMeans(opt_k, random_state=self.seed)
+                    km = KMeans(opt_k, random_state=self.seed, n_init=10)
                     km.fit(df_clus_ip)
                     clus_op = km.labels_
                     break
             opt_k = np.argmax(gaps) + 1
-            km = KMeans(opt_k, random_state=self.seed)
+            km = KMeans(opt_k, random_state=self.seed, n_init=10)
             km.fit(df_clus_ip)
             clus_op = km.labels_
         self.df_summary = df_summary

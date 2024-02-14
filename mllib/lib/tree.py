@@ -167,7 +167,7 @@ class Tree():
             df_op = x_predict.copy(deep=True)
             df_op[self.y_var] = -1.0
         lst_lag_val = self.df[self.y_var].tolist()
-        for i, _ in enumerate(df_op.values):
+        for i, _ in enumerate(df_op):
             df_pred_x = pd.DataFrame(df_op.iloc[i]).T
             for j, _ in enumerate(self.ts_param["ts_lag_var"]):
                 df_pred_x["lag_" + str(self.ts_param["ts_lag_var"][j])] \
@@ -429,8 +429,7 @@ class XGBoost(Tree):
                                           verbosity=0,
                                           silent=True,
                                           random_state=self.seed,
-                                          seed=self.seed,
-                                          use_label_encoder=False)
+                                          seed=self.seed)
         elif self.method in ("regression", "timeseries"):
             tmp_model = xgb.XGBRegressor(n_jobs=1,
                                          verbosity=0,

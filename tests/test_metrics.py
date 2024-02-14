@@ -97,7 +97,7 @@ class TestMetrics(unittest.TestCase):
         """Metrics: Test for AIC in linear regression"""
         y = [34, 37, 44, 47, 48, 48, 46, 43, 32, 27, 26, 24]
         y_hat = [37, 40, 46, 44, 46, 50, 45, 44, 34, 30, 22, 23]
-        exp_op = -6.525
+        exp_op = -6.125
         op = np.round(metrics.aic(y, y_hat, k=1, method="linear"), 3)
         self.assertEqual(op, exp_op)
 

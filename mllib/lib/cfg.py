@@ -33,7 +33,7 @@ Credits
     Authors:
         - Diptesh
 
-    Date: Sep 01, 2021
+    Date: Feb 11, 2024
 """
 
 # pylint: disable=invalid-name
@@ -44,7 +44,7 @@ import re
 from inspect import getsourcefile
 from os.path import abspath
 
-__version__: str = "0.4.1"
+__version__: str = "0.4.2"
 __doc__: str = "Machine Learning Library"
 module: str = "mllib"
 
