@@ -32,17 +32,19 @@ printf "=%.0s" {1..70}
 if [[ $module == "-a" || $module == "-u" ]]
 then
 	printf "\nRunning unit & integration tests ...\n\n"
-	coverage run -m unittest discover -v -s $test_dir -p "test_*.py"
-	coverage report -m --omit="*/tests/test_*,*/opt/spark-*" > "$proj_dir/logs/cov.out"
+	coverage run -m unittest discover -v -s $test_dir -p "test_*.py"	
+  printf "=%.0s" {1..70}
+	printf "\n"
+	printf "\nComputing test coverage ...\n\n"
+	coverage report -m --omit="*/tests/test_*,*/opt/spark-*" 2>&1 | tee "$proj_dir/logs/cov.out"
 	COV_SCORE=`grep "TOTAL" $proj_dir/logs/cov.out | tail -1 | awk '{ printf("%d", $4) }'`
 	COV_COLOR="red"
 	if [[ $COV_SCORE == "100" ]]
 	then
 		COV_COLOR="dagreen"
 	fi
-	sed -i "4s/.*/\[\!\[Coverage score\]\(\https\:\/\/img\.shields\.io\/badge\/coverage\-$COV_SCORE\%25\-$COV_COLOR.svg\)\]\(\.\/logs\/cov\.out\)/" "$proj_dir/README.md"
+	sed -i "3s/.*/\[\!\[Coverage score\]\(\https\:\/\/img\.shields\.io\/badge\/coverage\-$COV_SCORE\%25\-$COV_COLOR.svg\)\]\(\.\/logs\/cov\.out\)/" "$proj_dir/README.md"
 	printf "=%.0s" {1..70}
-	printf "\n"
 fi
 
 # Rate coding styles for all python scripts
@@ -71,11 +73,11 @@ then
     tot_score=$(echo "scale=1; $score/$cnt" | bc)
     printf "\nTotal score: $tot_score\n"
     # Add pylint badge to README.md
-    sed -i "3s/.*/\[\!\[pylint Score\]\(https\:\/\/mperlet\.github\.io\/pybadge\/badges\/$tot_score.svg\)\]\(\.\/logs\/pylint\/\)/" "$proj_dir/README.md"
+    sed -i "2s/.*/\[\!\[pylint Score\]\(https\:\/\/mperlet\.github\.io\/pybadge\/badges\/$tot_score.svg\)\]\(\.\/logs\/pylint\/\)/" "$proj_dir/README.md"
     printf "=%.0s" {1..70}
     printf "\n"
 fi
 
-pipreqs --force $proj_dir &> $proj_dir/logs/pip.out
+pipreqs --force --use-local $proj_dir &> $proj_dir/logs/pip.out
 
 exit 0

@@ -26,6 +26,7 @@ Credits
 # pylint: disable=invalid-name
 # pylint: disable-msg=too-many-arguments
 # pylint: disable=too-many-instance-attributes
+# pylint: disable=C0413
 
 # =============================================================================
 # --- Import libraries
@@ -33,11 +34,22 @@ Credits
 
 from typing import List, Tuple, Dict
 
+import re
+import sys
+from inspect import getsourcefile
+from os.path import abspath
+
 import copy
 import math
 import pandas as pd
 import numpy as np
 import pulp
+
+path = abspath(getsourcefile(lambda: 0))
+path = re.sub(r"(.+\/)(.+.py)", "\\1", path)
+sys.path.insert(0, path)
+
+import haversine
 
 # =============================================================================
 # --- User defined functions
@@ -67,51 +79,6 @@ class TSP:
     """
 
     _paired_loc = None
-
-    @staticmethod
-    def haversine_np(lon1: List[float],
-                     lat1: List[float],
-                     lon2: List[float],
-                     lat2: List[float],
-                     dist: str = "mi"
-                     ) -> np.ndarray:
-        """
-        Haversine distance formula.
-
-        Calculate the euclidean distance in miles between two points
-        specified in decimal degrees using
-        `Haversine formula <https://en.wikipedia.org/wiki/Haversine_formula>`_.
-
-        Parameters
-        ----------
-        lon1, lat1, lon2, lat2 : float
-
-            Pair of Latitude and Longitude. All args must be of equal length.
-
-        dist : str, `optional`
-
-            Output distance in miles ('mi') or kilometers ('km')
-            (the default is mi)
-
-        Returns
-        -------
-        numpy.ndarray
-
-            Euclidean distance between two points in miles.
-
-        """
-        if dist == "km":  # pragma: no cover
-            R = 6372.8
-        else:
-            R = 3959.87433
-        lon1, lat1, lon2, lat2 = map(np.radians, [lon1, lat1, lon2, lat2])
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-        a = (np.sin(dlat / 2.0) ** 2
-             + np.cos(lat1) * np.cos(lat2)
-             * np.sin(dlon / 2.0) ** 2)
-        op = R * 2 * np.arcsin(np.sqrt(a))
-        return op
 
     @staticmethod
     def pair_dist(loc: List[str],
@@ -158,8 +125,10 @@ class TSP:
                       copy=False)
         df = df.drop(labels=["key"], axis=1)
         df = df[df["loc_x"] != df["loc_y"]]
-        df["dist"] = TSP.haversine_np(df["y_x"], df["x_x"],
-                                      df["y_y"], df["x_y"])
+        df["dist"] = haversine.haversine_cy(np.array(df["y_x"]),
+                                            np.array(df["x_x"]),
+                                            np.array(df["y_y"]),
+                                            np.array(df["x_y"]))
         df = df[["loc_x", "loc_y", "dist"]]
         df = dict(zip(zip(df.loc_x, df.loc_y), df.dist))
         return (loc, df)
@@ -419,51 +388,6 @@ class Transport():
         self._inputs = None
         self.output = None
 
-    @staticmethod
-    def haversine_np(lon1: List[float],
-                     lat1: List[float],
-                     lon2: List[float],
-                     lat2: List[float],
-                     dist: str = "mi"
-                     ) -> np.ndarray:
-        """
-        Haversine distance formula.
-
-        Calculate the euclidean distance in miles between two points
-        specified in decimal degrees using
-        `Haversine formula <https://en.wikipedia.org/wiki/Haversine_formula>`_.
-
-        Parameters
-        ----------
-        lon1, lat1, lon2, lat2 : float
-
-            Pair of Latitude and Longitude. All args must be of equal length.
-
-        dist : str, `optional`
-
-            Output distance in miles ('mi') or kilometers ('km')
-            (the default is mi)
-
-        Returns
-        -------
-        numpy.ndarray
-
-            Euclidean distance between two points in miles.
-
-        """
-        if dist == "km":  # pragma: no cover
-            R = 6372.8
-        else:
-            R = 3959.87433
-        lon1, lat1, lon2, lat2 = map(np.radians, [lon1, lat1, lon2, lat2])
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-        a = (np.sin(dlat / 2.0) ** 2
-             + np.cos(lat1) * np.cos(lat2)
-             * np.sin(dlon / 2.0) ** 2)
-        op = R * 2 * np.arcsin(np.sqrt(a))
-        return op
-
     def _opt_ip(self) -> Tuple[Dict[str, int],
                                Dict[str, int],
                                Dict[Tuple[str, str], float]]:
@@ -518,10 +442,10 @@ class Transport():
                          how="outer",
                          copy=False)
         df_wt = df_wt.drop(labels=["key"], axis=1)
-        df_wt["dist"] = Transport.haversine_np(df_wt["lon_x"],
-                                               df_wt["lat_x"],
-                                               df_wt["lon_y"],
-                                               df_wt["lat_y"])
+        df_wt["dist"] = haversine.haversine_cy(np.array(df_wt["lon_x"]),
+                                               np.array(df_wt["lat_x"]),
+                                               np.array(df_wt["lon_y"]),
+                                               np.array(df_wt["lat_y"]))
         df_wt = df_wt.sort_values(["loc_x", "loc_y"])
         df_wt.loc[(df_wt["loc_x"] == "Dummy") | (df_wt["loc_y"] == "Dummy"),
                   "dist"] = 0
