@@ -1,10 +1,10 @@
 ************* Module tests.test_metrics
 test_metrics.py:61:22: I1101: Module 'mllib.lib.metrics' has no 'rsq' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
-test_metrics.py:69:22: I1101: Module 'mllib.lib.metrics' has no 'mse' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
-test_metrics.py:77:22: I1101: Module 'mllib.lib.metrics' has no 'rmse' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
-test_metrics.py:85:22: I1101: Module 'mllib.lib.metrics' has no 'mae' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
-test_metrics.py:93:22: I1101: Module 'mllib.lib.metrics' has no 'mape' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
-test_metrics.py:101:22: I1101: Module 'mllib.lib.metrics' has no 'aic' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+test_metrics.py:71:22: I1101: Module 'mllib.lib.metrics' has no 'mse' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+test_metrics.py:81:22: I1101: Module 'mllib.lib.metrics' has no 'rmse' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+test_metrics.py:89:22: I1101: Module 'mllib.lib.metrics' has no 'mae' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+test_metrics.py:99:22: I1101: Module 'mllib.lib.metrics' has no 'mape' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+test_metrics.py:109:22: I1101: Module 'mllib.lib.metrics' has no 'aic' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
 
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)

@@ -174,6 +174,8 @@ class GLMNet():
         """Compute commonly used metrics to evaluate the model."""
         y = self.df[[self.y_var]].iloc[:, 0].values.tolist()
         y_hat = list(self.predict(self.df[self.x_var])["y"].values)
+        y = np.array(y, dtype=float)
+        y_hat = np.array(y_hat, dtype=float)
         model_summary = {"rsq": np.round(metrics.rsq(y, y_hat), 3),
                          "mae": np.round(metrics.mae(y, y_hat), 3),
                          "mape": np.round(metrics.mape(y, y_hat), 3),

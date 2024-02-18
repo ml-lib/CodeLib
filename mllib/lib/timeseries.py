@@ -199,6 +199,8 @@ class AutoArima():
         else:
             exog = self.df[self.x_var]
             y_hat = list(self.model.predict(n_periods=len(exog), X=exog))
+        y = np.array(y, dtype=float)
+        y_hat = np.array(y_hat, dtype=float)
         model_summary = {"rsq": np.round(metrics.rsq(y, y_hat), 3),
                          "mae": np.round(metrics.mae(y, y_hat), 3),
                          "mape": np.round(metrics.mape(y, y_hat), 3),
@@ -315,6 +317,21 @@ class BatesGrager():
         self.weights = {}
         self.fcst = np.zeros(len(self.df))
         self.df_op = self.df.copy()
+        self.model_summary = None
+
+    def _compute_metrics(self) -> Dict[str, float]:
+        """Compute commonly used metrics to evaluate the model."""
+        df = self.df_op.copy()
+        df = df[[self.y, "y_hat_bg"]]
+        df = df.iloc[self.lag:]
+        y = np.array(df[self.y], dtype=float)
+        y_hat = np.array(df["y_hat_bg"], dtype=float)
+        model_summary = {"rsq": np.round(metrics.rsq(y, y_hat), 3),
+                         "mae": np.round(metrics.mae(y, y_hat), 3),
+                         "mape": np.round(metrics.mape(y, y_hat), 3),
+                         "rmse": np.round(metrics.rmse(y, y_hat), 3)}
+        model_summary["mse"] = np.round(model_summary["rmse"] ** 2, 3)
+        self.model_summary = model_summary
 
     def _predict(self, df):
         """Predict module.
@@ -331,8 +348,8 @@ class BatesGrager():
         y_hat = self.y_hat
         df_bg_train = df.iloc[:-pred_period]
         df_bg_pred = df.iloc[-pred_period:]
-        mse_val = [metrics.mse(df_bg_train["y"].tolist(),
-                               df_bg_train[i].tolist())
+        mse_val = [metrics.mse(np.array(df_bg_train["y"], dtype=float),
+                               np.array(df_bg_train[i].tolist(), dtype=float))
                    for i in y_hat]
         weights = [1/i for i in mse_val]
         tot = sum(weights)
@@ -362,4 +379,5 @@ class BatesGrager():
             self.fcst[lag+epoch] = fcst_tmp[0]
             self.weights[epoch+self.lag] = [fcst_tmp[1], fcst_tmp[2]]
         self.df_op["y_hat_bg"] = self.fcst
+        self._compute_metrics()
         return self.df_op

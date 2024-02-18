@@ -43,7 +43,7 @@ then
 	then
 		COV_COLOR="dagreen"
 	fi
-	sed -i "3s/.*/\[\!\[Coverage score\]\(\https\:\/\/img\.shields\.io\/badge\/coverage\-$COV_SCORE\%25\-$COV_COLOR.svg\)\]\(\.\/logs\/cov\.out\)/" "$proj_dir/README.md"
+	sed -i "4s/.*/\[\!\[Coverage score\]\(\https\:\/\/img\.shields\.io\/badge\/coverage\-$COV_SCORE\%25\-$COV_COLOR.svg\)\]\(\.\/logs\/cov\.out\)/" "$proj_dir/README.md"
 	printf "=%.0s" {1..70}
 fi
 
@@ -73,7 +73,7 @@ then
     tot_score=$(echo "scale=1; $score/$cnt" | bc)
     printf "\nTotal score: $tot_score\n"
     # Add pylint badge to README.md
-    sed -i "2s/.*/\[\!\[pylint Score\]\(https\:\/\/mperlet\.github\.io\/pybadge\/badges\/$tot_score.svg\)\]\(\.\/logs\/pylint\/\)/" "$proj_dir/README.md"
+    sed -i "3s/.*/\[\!\[pylint Score\]\(https\:\/\/mperlet\.github\.io\/pybadge\/badges\/$tot_score.svg\)\]\(\.\/logs\/pylint\/\)/" "$proj_dir/README.md"
     printf "=%.0s" {1..70}
     printf "\n"
 fi

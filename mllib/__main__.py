@@ -34,6 +34,7 @@ from lib.tree import XGBoost  # noqa: F841
 from lib.opt import TSP  # noqa: F841
 from lib.opt import Transport  # noqa: F841
 from lib.timeseries import AutoArima  # noqa: F841
+from lib.timeseries import BatesGrager  # noqa: F841
 
 # =============================================================================
 # --- DO NOT CHANGE ANYTHING FROM HERE
@@ -186,6 +187,25 @@ if __name__ == '__main__':
     df_ip = df_ip.set_index("ts")
     mod = XGBoost(df=df_ip, y_var="y", x_var=["cost"], method="timeseries")
     print("\nXGBoost timeseries\n")
+    for k, v in mod.model_summary.items():
+        print(k, str(v).rjust(69 - len(k)))
+    print(elapsed_time("Time", start_t),
+          sep,
+          sep="\n")
+    # --- Bates & Granger
+    start_t = time.time_ns()
+    df_raw = pd.read_excel(path + "input/test_time_series.xlsx",
+                           sheet_name="bates_granger")
+    exp_op = df_raw[["ts", "y", "y_hat_01", "y_hat_02",
+                     "y_hat_03", "y_hat_04", "y_hat_bg"]].fillna(0)
+    df_ip = exp_op.drop("y_hat_bg", axis=1)
+    mod = BatesGrager(df=df_ip,
+                      y="y",
+                      y_hat=["y_hat_01", "y_hat_02",
+                             "y_hat_03", "y_hat_04"],
+                      lag=53, pred_period=1)
+    op = mod.solve()
+    print("\nBates & Granger\n")
     for k, v in mod.model_summary.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
