@@ -8,7 +8,7 @@ Credits
     Authors:
         - Diptesh
 
-    Date: Jan 05, 2022
+    Date: Feb 17, 2024
 """
 
 # pylint: disable=invalid-name
@@ -34,6 +34,7 @@ path = re.sub(r"(.+)(\/tests.*)", "\\1", path)
 sys.path.insert(0, path)
 
 from mllib.lib.timeseries import AutoArima  # noqa: F841
+from mllib.lib.timeseries import BatesGrager  # noqa: F841
 
 __all__ = ["xlrd", "openpyxl", ]
 
@@ -90,6 +91,36 @@ class TestTimeSeries(unittest.TestCase):
         mod = AutoArima(df=df_ip, y_var="Passengers")
         op = mod.predict()
         self.assertAlmostEqual(op["Passengers"].values[0], 445.634, places=1)
+
+    def test_bates_granger(self):
+        """TimesSeries: Test for Bates & Granger"""
+        df_raw = pd.read_excel(path + "test_time_series.xlsx",
+                               sheet_name="bates_granger")
+        exp_op = df_raw[["ts", "y", "y_hat_01", "y_hat_02",
+                         "y_hat_03", "y_hat_04", "y_hat_bg"]].fillna(0)
+        df_ip = exp_op.drop("y_hat_bg", axis=1)
+        mod = BatesGrager(df=df_ip,
+                          y="y",
+                          y_hat=["y_hat_01", "y_hat_02",
+                                 "y_hat_03", "y_hat_04"],
+                          lag=53, pred_period=1)
+        op = mod.solve()
+        pd.testing.assert_frame_equal(op, exp_op)
+
+    def test_bates_granger_infeasible(self):
+        """TimesSeries: Test for Bates & Granger infeasibility"""
+        df_raw = pd.read_excel(path + "test_time_series.xlsx",
+                               sheet_name="bates_granger")
+        exp_op = df_raw[["ts", "y", "y_hat_01", "y_hat_02",
+                         "y_hat_03", "y_hat_04", "y_hat_bg"]].fillna(0)
+        df_ip = exp_op.drop("y_hat_bg", axis=1)
+        mod = BatesGrager(df=df_ip,
+                          y="y",
+                          y_hat=["y_hat_01", "y_hat_02",
+                                 "y_hat_03", "y_hat_04"],
+                          lag=100, pred_period=10)
+        with self.assertRaises(AssertionError):
+            mod.solve()
 
 
 # =============================================================================

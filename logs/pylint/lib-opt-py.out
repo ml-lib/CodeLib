@@ -1,3 +1,6 @@
+************* Module opt
+opt.py:128:21: I1101: Module 'haversine' has no 'haversine_cy' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
+opt.py:445:24: I1101: Module 'haversine' has no 'haversine_cy' member, but source is unavailable. Consider adding this module to extension-pkg-allow-list if you want to perform analysis based on run-time introspection of living objects. (c-extension-no-member)
 
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)

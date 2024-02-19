@@ -221,10 +221,6 @@ class Cluster():
             # Assign this loop's gap statistic and sk to gaps and sks
             gaps[gap_index] = gap
             sks[gap_index] = sk
-            # df_summary = df_summary.append({"cluster": k,
-            #                                 "gap": gap,
-            #                                 "sk": sk},
-            #                                ignore_index=True)
             df_summary = pd.concat([df_summary,
                                     pd.DataFrame({"cluster": [k],
                                                   "gap": [gap],
