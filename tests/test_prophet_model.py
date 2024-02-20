@@ -31,7 +31,7 @@ path = re.sub(r"(.+)(\/tests.*)", "\\1", path)
 
 sys.path.insert(0, path)
 
-from mllib.lib.prophet import FBP  # noqa: F841
+from mllib.lib.prophet_model import FBP  # noqa: F841
 
 # =============================================================================
 # --- DO NOT CHANGE ANYTHING FROM HERE

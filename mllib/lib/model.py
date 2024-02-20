@@ -43,7 +43,7 @@ import metrics  # noqa: F841
 # =============================================================================
 
 
-def ignore_warnings(test_func):
+def ignore_warnings(test_func):  # pragma: no cover
     """Suppress warnings."""
 
     def do_test(self, *args, **kwargs):
@@ -145,11 +145,9 @@ class GLMNet():
         self._fit()
         self._compute_metrics()
 
-    # TODO: Remove this once GLMNet is updated
-    @ignore_warnings
     def _fit(self) -> None:
         """Fit the best GLMNet model."""
-        train_x, test_x,\
+        train_x, test_x, \
             train_y, test_y = split(self.df[self.x_var],
                                     self.df[[self.y_var]],
                                     test_size=self.param["test_perc"],
@@ -159,7 +157,6 @@ class GLMNet():
                            fit_intercept=True,
                            alphas=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1,
                                    1.0, 10.0, 100.0],
-                           normalize=True,
                            cv=self.param["k_fold"],
                            n_jobs=self.param["n_jobs"],
                            random_state=self.param["seed"])
@@ -177,6 +174,8 @@ class GLMNet():
         """Compute commonly used metrics to evaluate the model."""
         y = self.df[[self.y_var]].iloc[:, 0].values.tolist()
         y_hat = list(self.predict(self.df[self.x_var])["y"].values)
+        y = np.array(y, dtype=float)
+        y_hat = np.array(y_hat, dtype=float)
         model_summary = {"rsq": np.round(metrics.rsq(y, y_hat), 3),
                          "mae": np.round(metrics.mae(y, y_hat), 3),
                          "mape": np.round(metrics.mape(y, y_hat), 3),

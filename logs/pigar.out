@@ -1,0 +1,18 @@
+[34m23:24:18[39m [33mparse /home/ph33r/Project/ml-lib_CodeLib/mllib/lib/timeseries.py:52 failed: SyntaxError("'(' was never closed", ('<unknown>', 1, 16, 'mod = AutoArima(df=df_ip,', 1, 0))[39m
+[34m23:24:18[39m [33mparse /home/ph33r/Project/ml-lib_CodeLib/mllib/lib/timeseries.py:256 failed: SyntaxError("'(' was never closed", ('<unknown>', 1, 18, 'mod = BatesGrager(df=df_ip,', 1, 0))[39m
+[34m23:24:18[39m [33mparse /home/ph33r/Project/ml-lib_CodeLib/mllib/lib/opt.py:467 failed: SyntaxError("'(' was never closed", ('<unknown>', 1, 39, 'optimal_op = Transport.integer_program(demand_dict,\n', 1, 0))[39m
+[34m23:24:18[39m [33mparse /home/ph33r/Project/ml-lib_CodeLib/mllib/lib/prophet_model.py:83 failed: SyntaxError("'(' was never closed", ('<unknown>', 1, 17, 'mod = TimeSeries(df=df_ip,', 1, 0))[39m
+[31mThe following modules are not found yet:[39m
+  [33mmllib[39m referenced from:
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_cluster.py: 33
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_gam.py: 34
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_haversine.py: 33
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_knn.py: 37
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_metrics.py: 33
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_model.py: 34
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_opt.py: 33,34
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_prophet_model.py: 34
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_timeseries.py: 36,37
+    /home/ph33r/Project/ml-lib_CodeLib/tests/test_tree.py: 39,40
+[31mSome of them may be not installed in local environment.
+Try to search PyPI for the missing modules and filter some unnecessary modules? (y/[N]) [39m

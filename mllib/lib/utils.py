@@ -29,7 +29,7 @@ import time
 # =============================================================================
 
 # pylint: disable=invalid-name
-# pylint: disable=abstract-class-instantiated
+# pylint: disable=abstract-class-instantiated, C0209
 
 # =============================================================================
 # --- User defined functions
