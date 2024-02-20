@@ -32,7 +32,6 @@ import logging
 import pandas as pd
 import numpy as np
 
-# import pystan
 from prophet import Prophet
 from prophet.diagnostics import cross_validation
 from prophet.diagnostics import performance_metrics
@@ -43,10 +42,8 @@ sys.path.insert(0, path)
 
 import metrics  # noqa: F841
 
-logging.getLogger("cmdstanpy").disabled = True #  turn 'cmdstanpy' logs off
+logging.getLogger("cmdstanpy").disabled = True
 logging.getLogger("prophet").setLevel(logging.ERROR)
-
-# __all__ = ["pystan", ]
 
 os.environ['NUMEXPR_MAX_THREADS'] = '8'
 
