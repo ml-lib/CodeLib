@@ -28,13 +28,13 @@ from inspect import getsourcefile
 from os.path import abspath
 
 import itertools
+import logging
 import pandas as pd
 import numpy as np
 
-import pystan
-from fbprophet import Prophet
-from fbprophet.diagnostics import cross_validation
-from fbprophet.diagnostics import performance_metrics
+from prophet import Prophet
+from prophet.diagnostics import cross_validation
+from prophet.diagnostics import performance_metrics
 
 path = abspath(getsourcefile(lambda: 0))
 path = re.sub(r"(.+\/)(.+.py)", "\\1", path)
@@ -42,45 +42,40 @@ sys.path.insert(0, path)
 
 import metrics  # noqa: F841
 
-__all__ = ["pystan", ]
+logging.getLogger("cmdstanpy").disabled = True
+logging.getLogger("prophet").setLevel(logging.ERROR)
 
 os.environ['NUMEXPR_MAX_THREADS'] = '8'
 
 
 class suppress_stdout_stderr(object):
-    """
-    Suppress fbprophet stdout.
-
+    '''
     A context manager for doing a "deep suppression" of stdout and stderr in
     Python, i.e. will suppress all print, even if the print originates in a
     compiled C/Fortran sub-function.
-
-    This will not suppress raised exceptions, since exceptions are printed
+       This will not suppress raised exceptions, since exceptions are printed
     to stderr just before a script exits, and after the context manager has
     exited (at least, I think that is why it lets exceptions through).
-    """
 
+    '''
     def __init__(self):
-        """Initialize variables."""
         # Open a pair of null files
         self.null_fds = [os.open(os.devnull, os.O_RDWR) for x in range(2)]
         # Save the actual stdout (1) and stderr (2) file descriptors.
-        self.save_fds = (os.dup(1), os.dup(2))
+        self.save_fds = [os.dup(1), os.dup(2)]
 
     def __enter__(self):
-        """Enter statements."""
         # Assign the null pointers to stdout and stderr.
         os.dup2(self.null_fds[0], 1)
         os.dup2(self.null_fds[1], 2)
 
     def __exit__(self, *_):
-        """Exit statements."""
         # Re-assign the real stdout/stderr back to (1) and (2)
         os.dup2(self.save_fds[0], 1)
         os.dup2(self.save_fds[1], 2)
         # Close the null files
-        os.close(self.null_fds[0])
-        os.close(self.null_fds[1])
+        for fd in self.null_fds + self.save_fds:
+            os.close(fd)
 
 
 class FBP():
@@ -192,6 +187,8 @@ class FBP():
         else:
             y_hat = list(self.model.predict(self.df[[self.ds]
                                                     + self.x_var])["yhat"])
+        y = np.array(y, dtype=float)
+        y_hat = np.array(y_hat, dtype=float)
         model_summary = {"rsq": np.round(metrics.rsq(y, y_hat), 3),
                          "mae": np.round(metrics.mae(y, y_hat), 3),
                          "mape": np.round(metrics.mape(y, y_hat), 3),
@@ -284,6 +281,7 @@ class FBP():
 
     def _model(self, params: dict) -> object:
         """Generate model object."""
+        logging.getLogger('prophet').setLevel(logging.ERROR)
         with suppress_stdout_stderr():
             model = Prophet(holidays=self.holidays, **params)
         if self.x_var is not None:
