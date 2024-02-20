@@ -78,7 +78,6 @@ then
     printf "\n"
 fi
 
-# pipreqs --force --use-local $proj_dir &> $proj_dir/logs/pip.out
-pigar --without-referenced-comments
+pipreqs --force --use-local $proj_dir &> $proj_dir/logs/pip.out
 
 exit 0

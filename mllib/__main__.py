@@ -35,7 +35,6 @@ from lib.opt import TSP  # noqa: F841
 from lib.opt import Transport  # noqa: F841
 from lib.timeseries import AutoArima  # noqa: F841
 from lib.timeseries import BatesGrager  # noqa: F841
-from lib.gam import GAM  # noqa: F841
 from lib.prophet_model import FBP  # noqa: F841
 
 # =============================================================================
@@ -186,24 +185,6 @@ if __name__ == '__main__':
              "seasonality_prior_scale": [0.01]}
     mod = FBP(df_train, y_var=y_var, x_var=x_var, ds="ts", param=param)
     print("\nProphet\n")
-    for k, v in mod.model_summary.items():
-        print(k, str(v).rjust(69 - len(k)))
-    print(elapsed_time("Time", start_t),
-          sep,
-          sep="\n")
-    # --- GAM
-    start_t = time.time_ns()
-    x_var = ["day_of_week", "cp", "stock_level", "retail_price"]
-    y_var = "y"
-    test_perc = 0.2
-    df_ip = pd.read_excel(path + "input/test_time_series.xlsx",
-                          sheet_name="exog")
-    df_ip["day_of_week"] = df_ip['ts'].dt.weekday
-    df_train = df_ip.iloc[0:int(len(df_ip) * (1-test_perc)), :]
-    df_test = df_ip.iloc[int(len(df_ip) * (1-test_perc)): len(df_ip), :]
-    df_test = df_test[x_var]
-    mod = GAM(df_train, y_var, x_var, splines=100)
-    print("\nPyGAM\n")
     for k, v in mod.model_summary.items():
         print(k, str(v).rjust(69 - len(k)))
     print(elapsed_time("Time", start_t),
