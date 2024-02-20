@@ -73,10 +73,10 @@ def elapsed_time(text: str,
     Time taken: 00:00:02 000 ms
 
     """
-    second, ms = divmod(round((time.time_ns() / 1e6) - (start_t / 1e6), 0),
-                        1000)
+    second, ms = divmod(int(round((time.time_ns() / 1e6) - (start_t / 1e6),
+                                  0)), 1000)
     minute, second = divmod(second, 60)
     hour, minute = divmod(minute, 60)
-    fn_op = text + str("%02d:%02d:%02d %03d ms" % (hour, minute, second, ms))\
+    fn_op = f'{text}' + f'{hour:02}:{minute:02}:{second:02} {ms:03} ms'\
         .rjust(sept - len(text))
     return fn_op
