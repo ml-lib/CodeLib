@@ -3,6 +3,7 @@ numpy==1.23.5
 openpyxl==3.0.10
 pandas==1.5.3
 pmdarima==2.0.3
+prophet==1.1.4
 PuLP==2.8.0
 scikit_learn==1.2.1
 scipy==1.10.0
