@@ -136,7 +136,6 @@ class Test_XGBoost(unittest.TestCase):
     def setUp(self):
         """Set up for module ``XGBoost``."""
 
-    @ignore_warnings
     def test_xgboost_class(self):
         """XGBoost: Test for classification"""
         x_var = ["x1", "x2"]
