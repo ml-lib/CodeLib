@@ -7,7 +7,7 @@ prophet==1.1.4
 PuLP==2.8.0
 scikit_learn==1.2.1
 scipy==1.10.0
-setuptools==65.6.3
+setuptools==70.0.0
 statsmodels==0.13.5
 xgboost==1.7.3
 xlrd==2.0.1
